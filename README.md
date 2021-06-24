@@ -8,7 +8,7 @@ The grammar in EBNF form is located in `resources/uvl.bnf`
 
 ## The Language
 
-In UVL each feature model consists of four optional separated elements:
+On a high level, each feature model in UVL consists of four optional separated elements:
 
 1. A namespace which can be used for references
 2. A list of imports that can be used to reference external feature models
@@ -66,7 +66,7 @@ REF = (ID <'.'>)* strictID
 <int> = #'0|[1-9]\d*'
 ```
 
-The following snippet shows a simplified server architecture in UVL. We provide more examples (e.g., to show the composition mechanism) in [examples/language](https://github.com/Universal-Variability-Language/uvl-parser/examples/language).
+The following snippet shows a simplified server architecture in UVL. We provide more examples (e.g., to show the composition mechanism) in [examples/language](https://github.com/Universal-Variability-Language/uvl-parser/tree/master/examples/language).
 
 ```
 features
@@ -126,6 +126,29 @@ The `standalone.jar` includes all dependencies, while the other jar ships only t
 ## Usage from Java
 The class `de.neominik.uvl.UVLParser` exposes the static method `parse(String)` which will return an instance of a `de.neominik.uvl.UVLModel` on success or a `de.neominik.uvl.ParseError` when the input didn't comply to the grammar.
 Printing is implemented in the `toString()`methods of the different model elements in the `UVLModel`.
+The following snippet shows a minimal example to read and write UVL models using the jar. More usage examples that also show how to use the acquired UVLModel object can be found in [examples/java](https://github.com/Universal-Variability-Language/uvl-parser/tree/master/examples/java)
+
+```Java
+UVLModel model;
+
+// Read
+String content = new String(Files.readAllBytes(Paths.get("file")), StandardCharsets.UTF_8);
+Object result = UVLParser.parse(content);
+if (result instanceof UVLModel) {
+	model = (UVLModel) result;
+} else {
+	System.out.println("Faulty input");
+	model = null;
+}
+
+
+// Write
+
+BufferedWriter writer = new BufferedWriter(new FileWriter(model.getNamespace() + ".uvl"));
+writer.write(model.toString());
+writer.close();
+
+``` 
 
 
 ## License
