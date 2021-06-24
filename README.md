@@ -143,7 +143,6 @@ if (result instanceof UVLModel) {
 
 
 // Write
-
 BufferedWriter writer = new BufferedWriter(new FileWriter(model.getNamespace() + ".uvl"));
 writer.write(model.toString());
 writer.close();
