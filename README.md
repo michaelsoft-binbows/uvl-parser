@@ -10,11 +10,16 @@ The grammar in EBNF form is located in `resources/uvl.bnf`
 
 On a high level, each feature model in UVL consists of four optional separated elements:
 
-1. A namespace which can be used for references
-2. A list of imports that can be used to reference external feature models
-3. The tree hierarchy consisting of: features, group types, and attributes whose relations are specified using nesting (indendation)
-4. Cross-tree constraints
-
+1. **A namespace which can be used for references in other models**
+2. **A list of imports that can be used to reference external feature models**
+The models are referenced by their file name and can be given an alias using a Java import like syntax.
+External models in subdirectories can be referenced like this: subdir.filename as fn
+4. **The tree hierarchy consisting of: features, group types, and attributes whose relations are specified using nesting (indendation)**
+The children of a feature are either groups (or, alternative, mandatory, optional, cardinality) or feature attributes.
+Groups may have an arbitrary number of features as child nodes.
+Attributes consist of a key-value pair whose key is always a string and its value may be a boolean, number, string, a list attributes, a vector, or a constraint.
+6. **Cross-tree constraints**
+Cross-tree constraints may be arbitrary propositional formulas with the following symbols: => (implies), <=> (iff), & (and), | (or), ! (not), or brackets.
 
 
 For our tool, we specified the language as context-free grammar (CFG) in EBNF notation as seen below.
