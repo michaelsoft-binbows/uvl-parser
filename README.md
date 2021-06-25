@@ -1,5 +1,9 @@
 # UVL - Universal Variability Language
 
+
+[![DOI](https://zenodo.org/badge/377147956.svg)](https://zenodo.org/badge/latestdoi/377147956)
+
+
 This is a small default library used to parse and print the Universal Variability Language (UVL).
 It is written in Clojure, but can also be used from any JVM language, as it exposes a Java API.
 
