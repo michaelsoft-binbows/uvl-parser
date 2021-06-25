@@ -74,6 +74,8 @@ REF = (ID <'.'>)* strictID
 The following snippet shows a simplified server architecture in UVL. We provide more examples (e.g., to show the composition mechanism) in [examples/language](https://github.com/Universal-Variability-Language/uvl-parser/tree/master/examples/language).
 
 ```
+namespace Server
+
 features
   Server {abstract}
     mandatory
