@@ -9,6 +9,7 @@ import java.util.Arrays;
 import de.neominik.uvl.UVLParser;
 import de.neominik.uvl.ast.Feature;
 import de.neominik.uvl.ast.Group;
+import de.neominik.uvl.ast.ParseError;
 import de.neominik.uvl.ast.UVLModel;
 
 public class UVLExample {
@@ -34,6 +35,9 @@ public class UVLExample {
 		
 		// write feature model
 		writeModel(server);
+		
+		// Parse faulty feature Model and show error messages
+		parseModel("faulty.uvl");
 	}
 	
 	/**
@@ -47,6 +51,9 @@ public class UVLExample {
 			Object result = UVLParser.parse(content);
 			if (result instanceof UVLModel) {
 				return (UVLModel) result;
+			}  else if (result instanceof ParseError) {
+				System.out.println(((ParseError) result).toString());
+				return null;
 			} else {
 				System.out.println("Faulty input");
 				return null;
@@ -125,6 +132,6 @@ public class UVLExample {
 			}
 		}
 	}
-	
+
 	
 }
