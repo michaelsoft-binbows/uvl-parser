@@ -38,7 +38,7 @@ Reference = REF
 
 indent = '_INDENT_'
 dedent = '_DEDENT_'
-<strictID> = nonWhiteSpaces | whiteSpaces
+<strictID> = noWhiteSpaces | whiteSpaces
 <noWhiteSpaces> = #'(?!alternative|or|features|constraints|true|false|as|refer)[a-zA-Z][a-zA-Z_0-9\+]*'
 <whiteSpaces> = #'\"(?!alternative|or|features|constraints|true|false|as|refer)[a-zA-Z][a-zA-Z_0-9\+\ ]*\"'
 <ID> = #'(?!true|false)[a-zA-Z][a-zA-Z_0-9]*'
