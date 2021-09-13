@@ -159,7 +159,17 @@ writer.write(model.toString());
 writer.close();
 
 ``` 
+## Links
+UVL models:
+* https://github.com/Universal-Variability-Language/uvl-models
 
+Other parsers:
+* https://github.com/diverso-lab/uvl-diverso/ *Under development, Antlr4 Parser* **Diverso Lab**
+
+Usage of UVL:
+* https://github.com/FeatureIDE/FeatureIDE *Feature modelling tool* 
+* https://github.com/SECPS/TraVarT *Tool for transforming variability models*
+* https://github.com/diverso-lab/core *Under development, Tool for analysis of variability models*
 
 ## License
 
