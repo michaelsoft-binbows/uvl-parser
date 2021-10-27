@@ -80,6 +80,7 @@
 
 (def transform-map {:FeatureModel xf-featuremodel
                     :REF xf-ref
+                    :REF-Restrictive xf-ref
                     :Imports xf-imports
                     :Import xf-import
 

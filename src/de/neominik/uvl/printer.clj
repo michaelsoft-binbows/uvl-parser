@@ -7,12 +7,24 @@
 (defn- prn-section [n xs]
   (when-let [ys (seq xs)] (format "\n%s\n%s" n (indent (s/join "\n" ys)))))
 
+
+(defn- format-feature-name [name]
+  "If the feature name contains an illegal name (cf. the following regex), parantheses are wrapped around the feature name."
+  (if (re-matches #"(?!alternative|or|features|constraints|true|false|as|refer|_INDENT_|_DEDENT_)[^\s\"\{\}\[\]\(\)\=\>\<\|\&\!]+" name)
+    name
+    (let [ind (clojure.string/last-index-of name ".")]
+      (if (nil? ind)
+        (str "\"" name "\"")
+        (str (subs name 0 (inc ind)) "\"" (subs name (inc ind)) "\"")))))
+
 (defn UVLModel-prn [m]
   (str
    (format "namespace %s" (.getNamespace m))
    (prn-section "\nimports" (.getImports m))
    (prn-section "\nfeatures" (.getRootFeatures  m))
-   (prn-section "\nconstraints" (or (seq (.getOwnConstraints m)) (.getConstraints m)))))
+   (prn-section "\nconstraints" (concat
+     (for [i (seq (.getOwnConstraints m))] (if (instance? String i) (format-feature-name i) (str i)))
+     (for [i (seq (.getConstraints m))] (if (instance? String i) (format-feature-name i) (str i)))))))
 
 (defn Import-prn [i]
   (str (.getNamespace i) (when-not (= (.getNamespace i) (.getAlias i)) (format " as %s" (.getAlias i)))))
@@ -33,7 +45,7 @@
       (format " {\n%s\n}" (indent (s/join ",\n" (map prn-item as))))
       (format " {%s}" (s/join ", " (map prn-item as))))))
 (defn Feature-prn [f]
-  (str (.getName f) (prn-attrs (.getAttributes f)) (when-let [gs (seq (.getGroups f))] (indent (s/join "\n" (map Group-prn gs))))))
+  (str (format-feature-name(.getName f)) (prn-attrs (.getAttributes f)) (when-let [gs (seq (.getGroups f))] (indent (s/join "\n" (map Group-prn gs))))))
 
 (def ^:private priority (zipmap ["String" "Not" "And" "Or" "Impl" "Equiv"] (range)))
 (defn- needs-parens [parent child]
@@ -41,9 +53,11 @@
         cc (.getSimpleName (class child))]
     (or (< (priority pc) (priority cc)) (= "Not" pc cc))))
 (defn- prn-constraint [parent child]
-  (if (needs-parens parent child)
-    (format "(%s)" (str child))
-    (str child)))
+  (if (instance? String child)
+    (format-feature-name child)
+    (if (needs-parens parent child)
+      (format "(%s)" (str child))
+      (str child))))
 (defn Not-prn [c] (str \! (prn-constraint c (.getChild c))))
 (defn And-prn [c] (format "%s & %s" (prn-constraint c (.getLeft c)) (prn-constraint c (.getRight c))))
 (defn Or-prn [c] (format "%s | %s" (prn-constraint c (.getLeft c)) (prn-constraint c (.getRight c))))

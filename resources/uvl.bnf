@@ -1,8 +1,8 @@
 FeatureModel = Ns? Imports? Features? Constraints?
 
-Ns = <'namespace'> REF
+Ns = <'namespace'> REF-Restrictive
 Imports = <'imports'> (<indent> Import+ <dedent>)?
-Import = REF (<'as'> As)?
+Import = REF-Restrictive (<'as'> As)?
 As = ID
 
 Features = <'features'> Children?
@@ -38,7 +38,11 @@ Reference = REF
 
 indent = '_INDENT_'
 dedent = '_DEDENT_'
-<strictID> = #'(?!alternative|or|features|constraints|true|false|as|refer)[a-zA-Z][a-zA-Z_0-9]*'
+<strictID> = strictIDdef | <'"'> strictIDdefQ <'"'>
+<strictIDdef> = #'(?!alternative|or|features|constraints|true|false|as|refer|_INDENT_|_DEDENT_)[^\s\"\.\{\}\[\]\(\)\=\>\<\|\&\!]+'
+<strictIDdefQ> = #'[^\"\.\n\r]+'
 <ID> = #'(?!true|false)[a-zA-Z][a-zA-Z_0-9]*'
 REF = (ID <'.'>)* strictID
+<strictID-Restrictive> = #'(?!alternative|or|features|constraints|true|false|as|refer)[a-zA-Z][a-zA-Z_0-9]*'
+REF-Restrictive = (ID <'.'>)* strictID-Restrictive
 <int> = #'0|[1-9]\d*'
